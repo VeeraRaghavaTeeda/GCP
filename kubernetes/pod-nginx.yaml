@@ -1,0 +1,18 @@
+#Create a new pod with the nginx image.
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels:
+    app: nginx-first-pod
+spec:
+  containers:
+  - name: nginx
+    image: nginx 
+	
+	
+	
+	
+#kubectl create -f pod.yaml 

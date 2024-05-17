@@ -1,0 +1,34 @@
+#Create a new pod with the name redis and the image redis123.
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: redis
+  labels:
+    app: nginx-first-pod
+spec:
+  containers:
+  - name: redis
+    image: redis123
+
+
+
+#kubectl apply -f    pod-definition.yaml
+#After that edit image name to redis  
+#There are 2 ways    editing yaml file or kubectl edit pod command            
+
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: redis
+  labels:
+    app: nginx-first-pod
+spec:
+  containers:
+  - name: redis
+    image: redis
+
+

@@ -1,0 +1,215 @@
+#Create a ReplicaSet using the replicaset-definition-1.yaml file
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata: 
+  name: new-replica-set-1
+  labels:
+    app: new-app-replicaset
+    tier: webapp
+spec:
+  template:
+    metadata:
+      name: new-replica
+      labels:
+        app: new-app-replicaset-1
+    spec:
+      containers:
+      - name: replicaset
+        image: nginx
+  replicas: 3
+  selector:
+    matchLabels:
+      app: new-app-replicaset-1
+                              
+#kubectl create -f  replicaset-definition-1.yaml       
+
+##Fix the issue in the replicaset-definition-2.yaml file and create a ReplicaSet using it.
+
+                  apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: replicaset-2
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        tier: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+#After fixing the line number 37 and 41 line values should be same then only we can able to create replica set 
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: replicaset-2
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      tier: nginx
+  template:
+    metadata:
+      labels:
+        tier: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+
+
+#Fix the original replica set new-replica-set to use the correct busybox image.
+#before chancges yaml was 
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  creationTimestamp: "2024-05-17T05:39:42Z"
+  generation: 1
+  name: new-replica-set
+  namespace: default
+  resourceVersion: "1109"
+  uid: 8be100e4-4f2f-4de1-8520-7c196c80f4f5
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      name: busybox-pod
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        name: busybox-pod
+    spec:
+      containers:
+      - command:
+        - sh
+        - -c
+        - echo Hello Kubernetes! && sleep 3600
+        image: busybox777
+        imagePullPolicy: Always
+        name: busybox-container
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status:
+  fullyLabeledReplicas: 4
+  observedGeneration: 1
+  replicas: 4
+#kubectl get rs new-replica-set -o yaml >new-replica-set--1.yaml  
+# change the line 95 to busybox instead of busybox777.
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  creationTimestamp: "2024-05-17T05:39:42Z"
+  generation: 1
+  name: new-replica-set
+  namespace: default
+  resourceVersion: "1109"
+  uid: 8be100e4-4f2f-4de1-8520-7c196c80f4f5
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      name: busybox-pod
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        name: busybox-pod
+    spec:
+      containers:
+      - command:
+        - sh
+        - -c
+        - echo Hello Kubernetes! && sleep 3600
+        image: busybox
+        imagePullPolicy: Always
+        name: busybox-container
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status:
+  fullyLabeledReplicas: 4
+  observedGeneration: 1
+  replicas: 4
+ #kubectl replace --force -f new-replica-set--1.yaml
+#replicaset.apps "new-replica-set" deleted
+#replicaset.apps/new-replica-set replaced
+#kubectl get pods 
+#new-replica-set-mdppk     1/1     Running   0          58s
+#new-replica-set-2plvf     1/1     Running   0          59s
+#new-replica-set-k6bzg     1/1     Running   0          59s
+#new-replica-set-gcmgs     1/1     Running   0          59s
+
+##Scale the ReplicaSet to 5 PODs.
+##Use kubectl scale command or edit the replicaset using kubectl edit replicaset.
+
+#ANS ::: -- kubectl scale rs new-replica-set --replicas 5
+#
+#
+#Now scale the ReplicaSet down to 2 PODs.
+
+
+#kubectl edit rs new-replica-set 
+#Chaneg the line  no  183 to from 4 to 2 and save the file 
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  creationTimestamp: "2024-05-17T05:39:42Z"
+  generation: 1
+  name: new-replica-set
+  namespace: default
+  resourceVersion: "1109"
+  uid: 8be100e4-4f2f-4de1-8520-7c196c80f4f5
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: busybox-pod
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        name: busybox-pod
+    spec:
+      containers:
+      - command:
+        - sh
+        - -c
+        - echo Hello Kubernetes! && sleep 3600
+        image: busybox
+        imagePullPolicy: Always
+        name: busybox-container
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status:
+  fullyLabeledReplicas: 4
+  observedGeneration: 1
+  replicas: 4
+
+#new-replica-set-mdppk     1/1     Running   0          8m12s
+#new-replica-set-k6bzg     1/1     Running   0          8m13s
